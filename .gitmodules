@@ -1,0 +1,6 @@
+[submodule "template-latex"]
+	path = template-latex
+	url = git@github.com:tDalile/template-latex.git
+[submodule "template-markdown"]
+	path = template-markdown
+	url = git@github.com:tDalile/template-markdown.git
