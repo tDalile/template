@@ -19,8 +19,30 @@ LATEX_FLAGS =\
 	-H etc/disable_float.tex \
 	-H etc/custom.tex
 
+REVEALJS_URL =./template-slides/js/reveal.js
+SLIDE_THEME =beige
+
 PANDOC_SLIDES =\
-	-t revealjs
+	-s -t revealjs \
+        --slide-level=2 \
+	-V revealjs-url=$(REVEALJS_URL) 
+#	-V theme=none
+#	--standalone \
+	--no-highlight \
+        --slide-level=1 \
+        --include-in-header=template-slides/revealjs-header.html \
+        -V theme=none \
+        -V controls=false \
+        -V history=true \
+        -V transition=fade \
+        -V viewDistance=10 \
+        -V center=false \
+        -V width=\"90%\" \
+        -V height=\"100%\" \
+        -V margin=0 \
+        -V minScale=1 \
+        -V maxScale=1
+        #-i "$(<F)" -o "$(@F)"
 
 note.new:
 	@$(ROOT_DIR_MD)/bin/create-note
@@ -40,5 +62,12 @@ note.slides: $(patsubst %.md,%.html,$(wildcard notes/*.md))
 # Generalized rule: how to build slides from each .md
 %.html: %.md
 	@mkdir -p $(OUT_DIR_NOTES)
-	@pandoc $(PANDOC_SLIDES) -o $@ $< -C
+	@pandoc $(PANDOC_SLIDES) -o $@ $< -C 
 	@mv -i $(WORK_DIR_NOTES)/*.html $(OUT_DIR_NOTES)
+
+template-slides/css/$(SLIDE_THEME).css: template-slides/css/$(SLIDE_THEME).scss
+	sass --no-cache $< $@
+
+css: template-slides/css/$(SLIDE_THEME).css
+
+
